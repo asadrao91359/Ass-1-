@@ -139,3 +139,52 @@ hanoi2:
 	addi $sp, $sp, 20
 	jr $ra
 	
+	
+#######################################################################
+#    This is the decision structure to decide which prompt to print   #
+#######################################################################
+FromA:
+	beq $a3, $t4, PrintAB	#Source is A, Dest is B
+	beq $a3, $t5, PrintAC	#Source is A, Dest is B
+	
+PrintAB:
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)		#save a0
+	li  $v0, 4 #Print the Move from A to B
+	la  $a0, MoveAB
+	syscall
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	j hanoi2
+
+PrintAC:
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)		#save a0
+	li  $v0, 4 #Print the Move from A to C
+	la  $a0, MoveAC
+	syscall
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	j hanoi2
+FromB:
+	beq $a3, $t3, PrintBA	#Source is B, Dest is A
+	beq $a3, $t5, PrintBC	#Source is B, Dest is C
+
+PrintBA:
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)		#save a0
+	li  $v0, 4 #Print the Move from B to A
+	la  $a0, MoveBA
+	syscall
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	j hanoi2
+PrintBC:
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)		#save a0
+	li  $v0, 4 #Print the Move from B to C
+	la  $a0, MoveBC
+	syscall
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	j hanoi2
